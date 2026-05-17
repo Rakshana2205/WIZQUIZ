@@ -1,0 +1,65 @@
+.answer-card {
+  border-radius: 22px;
+  padding: 22px 18px;
+  text-align: center;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s ease;
+  position: relative;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.answer-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(255, 255, 255, 0.3),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.answer-card.hoverable {
+  cursor: pointer;
+}
+
+.answer-card.hoverable:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+}
+
+.answer-card.hoverable:hover::after {
+  opacity: 1;
+}
+
+.answer-card.hoverable:active {
+  transform: scale(0.95);
+}
+
+.answer-card.answered {
+  cursor: not-allowed;
+}
+
+.answer-icon {
+  font-size: 1.5rem;
+  display: block;
+  animation: popIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.answer-text {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #3d2b00;
+  line-height: 1.3;
+}

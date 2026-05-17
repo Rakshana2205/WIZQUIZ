@@ -1,0 +1,76 @@
+.loading-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff9db;
+}
+
+.loading-content {
+  text-align: center;
+  padding: 40px;
+}
+
+.loading-wizard {
+  font-size: 6rem;
+  display: block;
+  margin-bottom: 16px;
+  animation: wizardSpin 1s ease-in-out infinite alternate;
+}
+
+@keyframes wizardSpin {
+  0% {
+    transform: rotate(-15deg) scale(1);
+  }
+  100% {
+    transform: rotate(15deg) scale(1.1);
+  }
+}
+
+.loading-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #3d2b00;
+  margin-bottom: 8px;
+}
+
+.loading-dots {
+  font-size: 1rem;
+  color: rgba(61, 43, 0, 0.5);
+  margin-bottom: 24px;
+  height: 24px;
+}
+
+.loading-bar-wrapper {
+  width: 240px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 50px;
+  margin: 0 auto 24px;
+  overflow: hidden;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd43b, #74c0fc, #b2f2bb);
+  border-radius: 50px;
+  animation: loadingProgress 2.5s ease-in-out forwards;
+}
+
+@keyframes loadingProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.loading-tip {
+  font-size: 0.9rem;
+  color: rgba(61, 43, 0, 0.55);
+  max-width: 280px;
+  margin: 0 auto;
+  line-height: 1.5;
+  font-style: italic;
+}
