@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import questions from "../data/questions";
 import AnswerCard from "../components/AnswerCard";
 import StreakBadge from "../components/StreakBadge";
@@ -9,7 +9,11 @@ const ANSWER_COLORS = ["#FFD43B", "#74C0FC", "#B2F2BB", "#FFA8A8"];
 const TIME_PER_QUESTION = 15;
 
 function QuizPage({ category, onFinish, onBack }) {
-  const categoryQuestions = questions.filter((q) => q.category === category);
+  const allCategoryQuestions = questions.filter((q) => q.category === category);
+  const categoryQuestions = [...allCategoryQuestions]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 10);
+
   const { playCorrect, playWrong, playComplete, playBack } = useSound();
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,27 +23,11 @@ function QuizPage({ category, onFinish, onBack }) {
   const [isAnswered, setIsAnswered] = useState(false);
   const [streak, setStreak] = useState(0);
   const [showStreak, setShowStreak] = useState(false);
-  const [answers, setAnswers] = useState([]);
+  const [quizAnswers, setQuizAnswers] = useState([]);
+
   const currentQuestion = categoryQuestions[currentIndex];
   const totalQuestions = categoryQuestions.length;
   const progress = (currentIndex / totalQuestions) * 100;
-
-  useEffect(() => {
-    if (isAnswered) return;
-    if (timeLeft === 0) {
-      handleAnswer(null);
-      return;
-    }
-    const timer = setTimeout(() => setTimeLeft((p) => p - 1), 1000);
-    return () => clearTimeout(timer);
-  }, [timeLeft, isAnswered, handleAnswer]);
-
-  useEffect(() => {
-    setTimeLeft(TIME_PER_QUESTION);
-    setIsAnswered(false);
-    setSelectedAnswer(null);
-    setShowStreak(false);
-  }, [currentIndex]);
 
   const handleAnswer = useCallback(
     (answer) => {
@@ -65,7 +53,7 @@ function QuizPage({ category, onFinish, onBack }) {
         isCorrect,
       };
 
-      setAnswers((prev) => {
+      setQuizAnswers((prev) => {
         const updatedAnswers = [...prev, newAnswer];
         setTimeout(() => {
           if (currentIndex + 1 < totalQuestions) {
@@ -96,6 +84,24 @@ function QuizPage({ category, onFinish, onBack }) {
       playComplete,
     ],
   );
+
+  useEffect(() => {
+    if (isAnswered) return;
+    if (timeLeft === 0) {
+      handleAnswer(null);
+      return;
+    }
+    const timer = setTimeout(() => setTimeLeft((p) => p - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [timeLeft, isAnswered, handleAnswer]);
+
+  useEffect(() => {
+    setTimeLeft(TIME_PER_QUESTION);
+    setIsAnswered(false);
+    setSelectedAnswer(null);
+    setShowStreak(false);
+  }, [currentIndex]);
+
   function getTimerColor() {
     if (timeLeft > 10) return "#B2F2BB";
     if (timeLeft > 5) return "#FFD43B";
