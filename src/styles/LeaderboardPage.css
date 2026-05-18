@@ -1,0 +1,163 @@
+.lb-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.lb-page {
+  max-width: 600px;
+  width: 100%;
+}
+
+.lb-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.lb-back-btn {
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #3d2b00;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.lb-back-btn:hover {
+  background: #ffa8a8;
+}
+
+.lb-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #3d2b00;
+  letter-spacing: -1px;
+}
+
+.lb-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.lb-tab {
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50px;
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(61, 43, 0, 0.6);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.lb-tab:hover {
+  background: #ffd43b;
+  color: #3d2b00;
+}
+
+.lb-tab-active {
+  background: #ffd43b;
+  color: #3d2b00;
+  border-color: #ffd43b;
+}
+
+.lb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lb-empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 24px;
+  border: 3px solid rgba(0, 0, 0, 0.05);
+}
+
+.lb-empty-emoji {
+  font-size: 4rem;
+  margin-bottom: 12px;
+}
+.lb-empty-text {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #3d2b00;
+  margin-bottom: 6px;
+}
+.lb-empty-sub {
+  font-size: 0.9rem;
+  color: rgba(61, 43, 0, 0.5);
+  font-weight: 600;
+}
+
+.lb-entry {
+  background: white;
+  border-radius: 20px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 3px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.lb-entry:hover {
+  transform: translateX(4px);
+}
+
+.lb-first {
+  background: linear-gradient(135deg, #fff9db, #ffe8a3);
+  border-color: #ffd43b;
+  box-shadow: 0 4px 20px rgba(255, 212, 59, 0.3);
+}
+
+.lb-medal {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.lb-avatar {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.lb-info {
+  flex: 1;
+}
+.lb-name {
+  font-size: 1rem;
+  font-weight: 900;
+  color: #3d2b00;
+  margin-bottom: 2px;
+}
+.lb-date {
+  font-size: 0.75rem;
+  color: rgba(61, 43, 0, 0.5);
+  font-weight: 600;
+}
+
+.lb-score-box {
+  text-align: right;
+}
+.lb-score {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #3d2b00;
+}
+.lb-score-sub {
+  font-size: 0.75rem;
+  color: rgba(61, 43, 0, 0.5);
+  font-weight: 600;
+}

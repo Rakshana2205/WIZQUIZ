@@ -1,20 +1,27 @@
-import { useState, useEffect, useCallback } from "react";
-import Lifelines from "../components/Lifelines";
+import { useState, useEffect } from "react";
 import questions from "../data/questions";
 import AnswerCard from "../components/AnswerCard";
-import StreakBadge from "../components/StreakBadge";
+import Lifelines from "../components/Lifelines";
 import useSound from "../hooks/useSound";
-import "../styles/QuizPage.css";
+import "../styles/DailyChallengePage.css";
 
 const ANSWER_COLORS = ["#FFD43B", "#74C0FC", "#B2F2BB", "#FFA8A8"];
-const TIME_PER_QUESTION = 15;
+const QUESTIONS_COUNT = 10;
+const TIME_PER_QUESTION = 12;
 
-function QuizPage({ category, onFinish, onBack }) {
-  const allCategoryQuestions = questions.filter((q) => q.category === category);
-  const categoryQuestions = [...allCategoryQuestions];
-  //   .sort(() => Math.random() - 0.5)
-  //   .slice(0, 10);
+function getDailyQuestions() {
+  const today = new Date().toDateString();
+  const seed = today.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  const shuffled = [...questions].sort((a, b) => {
+    const ra = Math.sin(seed + a.id) * 10000;
+    const rb = Math.sin(seed + b.id) * 10000;
+    return ra - Math.floor(ra) - (rb - Math.floor(rb));
+  });
+  return shuffled.slice(0, QUESTIONS_COUNT);
+}
 
+function DailyChallengePage({ player, onFinish, onBack }) {
+  const dailyQuestions = getDailyQuestions();
   const { playCorrect, playWrong, playComplete, playBack } = useSound();
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,72 +29,14 @@ function QuizPage({ category, onFinish, onBack }) {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(TIME_PER_QUESTION);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [streak, setStreak] = useState(0);
-  const [showStreak, setShowStreak] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState([]);
   const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
   const [usedSkip, setUsedSkip] = useState(false);
   const [hiddenOptions, setHiddenOptions] = useState([]);
 
-  const currentQuestion = categoryQuestions[currentIndex];
-  const totalQuestions = categoryQuestions.length;
+  const currentQuestion = dailyQuestions[currentIndex];
+  const totalQuestions = dailyQuestions.length;
   const progress = (currentIndex / totalQuestions) * 100;
-
-  const handleAnswer = useCallback(
-    (answer) => {
-      if (isAnswered) return;
-      const isCorrect = answer === currentQuestion.correct;
-      setSelectedAnswer(answer);
-      setIsAnswered(true);
-
-      if (isCorrect) {
-        playCorrect();
-        setScore((prev) => prev + 1);
-        setStreak((prev) => prev + 1);
-        setShowStreak(true);
-      } else {
-        playWrong();
-        setStreak(0);
-      }
-
-      const newAnswer = {
-        question: currentQuestion.question,
-        selected: answer,
-        correct: currentQuestion.correct,
-        isCorrect,
-      };
-
-      setQuizAnswers((prev) => {
-        const updatedAnswers = [...prev, newAnswer];
-        setTimeout(() => {
-          if (currentIndex + 1 < totalQuestions) {
-            setCurrentIndex((p) => p + 1);
-          } else {
-            playComplete();
-            onFinish({
-              score: isCorrect ? score + 1 : score,
-              total: totalQuestions,
-              category,
-              answers: updatedAnswers,
-            });
-          }
-        }, 1500);
-        return updatedAnswers;
-      });
-    },
-    [
-      isAnswered,
-      currentQuestion,
-      currentIndex,
-      totalQuestions,
-      score,
-      category,
-      onFinish,
-      playCorrect,
-      playWrong,
-      playComplete,
-    ],
-  );
 
   useEffect(() => {
     if (isAnswered) return;
@@ -95,21 +44,52 @@ function QuizPage({ category, onFinish, onBack }) {
       handleAnswer(null);
       return;
     }
-    const timer = setTimeout(() => setTimeLeft((p) => p - 1), 1000);
-    return () => clearTimeout(timer);
-  }, [timeLeft, isAnswered, handleAnswer]);
+    const t = setTimeout(() => setTimeLeft((p) => p - 1), 1000);
+    return () => clearTimeout(t);
+  }, [timeLeft, isAnswered]);
 
   useEffect(() => {
     setTimeLeft(TIME_PER_QUESTION);
     setIsAnswered(false);
     setSelectedAnswer(null);
-    setShowStreak(false);
+    setHiddenOptions([]);
   }, [currentIndex]);
 
-  function getTimerColor() {
-    if (timeLeft > 10) return "#B2F2BB";
-    if (timeLeft > 5) return "#FFD43B";
-    return "#FFA8A8";
+  function handleAnswer(answer) {
+    if (isAnswered) return;
+    const isCorrect = answer === currentQuestion.correct;
+    setSelectedAnswer(answer);
+    setIsAnswered(true);
+    if (isCorrect) {
+      playCorrect();
+      setScore((p) => p + 1);
+    } else playWrong();
+
+    const newAnswer = {
+      question: currentQuestion.question,
+      selected: answer,
+      correct: currentQuestion.correct,
+      isCorrect,
+    };
+
+    setQuizAnswers((prev) => {
+      const updated = [...prev, newAnswer];
+      setTimeout(() => {
+        if (currentIndex + 1 < totalQuestions) {
+          setCurrentIndex((p) => p + 1);
+        } else {
+          playComplete();
+          onFinish({
+            score: isCorrect ? score + 1 : score,
+            total: totalQuestions,
+            category: "📅 Daily Challenge",
+            answers: updated,
+            isDaily: true,
+          });
+        }
+      }, 1500);
+      return updated;
+    });
   }
 
   function handleFiftyFifty() {
@@ -140,18 +120,25 @@ function QuizPage({ category, onFinish, onBack }) {
         onFinish({
           score,
           total: totalQuestions,
-          category,
+          category: "📅 Daily Challenge",
           answers: updated,
+          isDaily: true,
         });
       }
       return updated;
     });
   }
 
+  function getTimerColor() {
+    if (timeLeft > 8) return "#B2F2BB";
+    if (timeLeft > 4) return "#FFD43B";
+    return "#FFA8A8";
+  }
+
   return (
-    <div className="quiz-wrapper">
-      <div className="quiz-page">
-        <div className="quiz-topbar">
+    <div className="daily-wrapper">
+      <div className="daily-page">
+        <div className="daily-topbar">
           <button
             className="quiz-back-btn"
             onClick={() => {
@@ -161,12 +148,15 @@ function QuizPage({ category, onFinish, onBack }) {
           >
             ← Back
           </button>
-          <div className="quiz-category-badge">
-            {currentQuestion.emoji} {category}
-          </div>
+          <div className="daily-badge">📅 Daily Challenge</div>
           <div className="quiz-score-badge">
             ⭐ {score}/{totalQuestions}
           </div>
+        </div>
+
+        <div className="daily-player">
+          <span>{player.avatar}</span>
+          <span>{player.name}</span>
         </div>
 
         <div className="progress-wrapper">
@@ -186,8 +176,6 @@ function QuizPage({ category, onFinish, onBack }) {
           <span className="timer-label">secs</span>
         </div>
 
-        {showStreak && <StreakBadge streak={streak} />}
-
         <Lifelines
           onFiftyFifty={handleFiftyFifty}
           onSkip={handleSkip}
@@ -196,7 +184,9 @@ function QuizPage({ category, onFinish, onBack }) {
         />
 
         <div className="question-card">
-          <p className="question-number">Question {currentIndex + 1}</p>
+          <p className="question-number">
+            {currentQuestion.emoji} Question {currentIndex + 1}
+          </p>
           <h2 className="question-text">{currentQuestion.question}</h2>
         </div>
 
@@ -226,7 +216,7 @@ function QuizPage({ category, onFinish, onBack }) {
             }`}
           >
             {selectedAnswer === currentQuestion.correct
-              ? "🎉 Correct! Well done wizard!"
+              ? "🎉 Correct! Keep going!"
               : selectedAnswer === null
                 ? `⏰ Time up! Answer: ${currentQuestion.correct}`
                 : `❌ Wrong! Answer: ${currentQuestion.correct}`}
@@ -237,4 +227,4 @@ function QuizPage({ category, onFinish, onBack }) {
   );
 }
 
-export default QuizPage;
+export default DailyChallengePage;

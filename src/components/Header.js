@@ -1,7 +1,7 @@
 import "../styles/Header.css";
 
-function Header({ highScores, onHome }) {
-  const totalGames = Object.keys(highScores).length;
+function Header({ highScores, onHome, player, onLeaderboard, onChangePlayer }) {
+  const totalGames = Object.keys(highScores || {}).length;
 
   return (
     <header className="wiz-header">
@@ -9,9 +9,17 @@ function Header({ highScores, onHome }) {
         🧙 WizQuiz
       </button>
       <div className="header-right">
+        {player && (
+          <button className="header-player" onClick={onChangePlayer}>
+            {player.avatar} {player.name}
+          </button>
+        )}
+        <button className="header-lb-btn" onClick={onLeaderboard}>
+          🏆 Scores
+        </button>
         {totalGames > 0 && (
           <span className="header-badge">
-            🏆 {totalGames} best score{totalGames > 1 ? "s" : ""} saved!
+            ⭐ {totalGames} best{totalGames > 1 ? "s" : ""}!
           </span>
         )}
       </div>

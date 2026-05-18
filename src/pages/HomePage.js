@@ -11,7 +11,7 @@ const CATEGORIES = [
   { title: "Movies", emoji: "🎬", color: "#E9BCFF" },
 ];
 
-function HomePage({ onSelectCategory, highScores }) {
+function HomePage({ onSelectCategory, highScores, onDailyChallenge, player }) {
   const { playStart } = useSound();
 
   function getQuestionCount(categoryTitle) {
@@ -28,6 +28,12 @@ function HomePage({ onSelectCategory, highScores }) {
             Test your knowledge across 5 magical categories!
           </p>
           <div className="home-stats">
+            {player && (
+              <div className="player-welcome">
+                <span>{player.avatar}</span>
+                <span>Welcome back, {player.name}!</span>
+              </div>
+            )}
             <span className="stat-pill">🧠 {questions.length} Questions</span>
             <span className="stat-pill">🏆 5 Categories</span>
             <span className="stat-pill">⚡ Beat your best!</span>
@@ -50,6 +56,19 @@ function HomePage({ onSelectCategory, highScores }) {
               style={{ animationDelay: `${i * 0.08}s` }}
             />
           ))}
+        </div>
+
+        <div className="daily-challenge-banner" onClick={onDailyChallenge}>
+          <div className="daily-challenge-left">
+            <span className="daily-challenge-emoji">📅</span>
+            <div>
+              <p className="daily-challenge-title">Daily Challenge</p>
+              <p className="daily-challenge-sub">
+                10 mixed questions — resets every day!
+              </p>
+            </div>
+          </div>
+          <button className="daily-challenge-btn">Play Now! ⚡</button>
         </div>
 
         <div className="home-footer">

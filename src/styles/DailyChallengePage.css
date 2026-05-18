@@ -1,0 +1,44 @@
+.daily-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.daily-page {
+  max-width: 680px;
+  width: 100%;
+}
+
+.daily-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 10px;
+}
+
+.daily-badge {
+  background: linear-gradient(135deg, #74c0fc, #b2f2bb);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #3d2b00;
+}
+
+.daily-player {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  border-radius: 50px;
+  padding: 8px 18px;
+  width: fit-content;
+  margin: 0 auto 16px;
+  font-weight: 800;
+  color: #3d2b00;
+  font-size: 0.95rem;
+}

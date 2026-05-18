@@ -1,0 +1,50 @@
+.lifelines-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.lifeline-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  min-width: 130px;
+}
+
+.lifeline-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  background: #ffd43b;
+}
+
+.lifeline-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.lifeline-used {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-style: dashed !important;
+}
+
+.lifeline-icon {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #3d2b00;
+}
+
+.lifeline-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(61, 43, 0, 0.6);
+}
