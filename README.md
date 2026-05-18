@@ -4,7 +4,7 @@ A magical quiz game built with React! Test your knowledge across 5 categories wi
 
 ## 🎮 Live Demo
 
-[Play WizQuiz here](#)
+[Play WizQuiz here](wizquiz.vercel.app)
 
 ## ✨ Features
 
