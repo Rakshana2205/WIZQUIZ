@@ -17,10 +17,9 @@ function QuizPage({ category, onFinish, onBack }) {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(TIME_PER_QUESTION);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [answers, setAnswers] = useState([]);
   const [streak, setStreak] = useState(0);
   const [showStreak, setShowStreak] = useState(false);
-
+  const [answers, setAnswers] = useState([]);
   const currentQuestion = categoryQuestions[currentIndex];
   const totalQuestions = categoryQuestions.length;
   const progress = (currentIndex / totalQuestions) * 100;
@@ -33,7 +32,7 @@ function QuizPage({ category, onFinish, onBack }) {
     }
     const timer = setTimeout(() => setTimeLeft((p) => p - 1), 1000);
     return () => clearTimeout(timer);
-  }, [timeLeft, isAnswered]);
+  }, [timeLeft, isAnswered, handleAnswer]);
 
   useEffect(() => {
     setTimeLeft(TIME_PER_QUESTION);
@@ -42,48 +41,61 @@ function QuizPage({ category, onFinish, onBack }) {
     setShowStreak(false);
   }, [currentIndex]);
 
-  function handleAnswer(answer) {
-    if (isAnswered) return;
-    const isCorrect = answer === currentQuestion.correct;
-    setSelectedAnswer(answer);
-    setIsAnswered(true);
+  const handleAnswer = useCallback(
+    (answer) => {
+      if (isAnswered) return;
+      const isCorrect = answer === currentQuestion.correct;
+      setSelectedAnswer(answer);
+      setIsAnswered(true);
 
-    if (isCorrect) {
-      playCorrect();
-      setScore((prev) => prev + 1);
-      setStreak((prev) => prev + 1);
-      setShowStreak(true);
-    } else {
-      playWrong();
-      setStreak(0);
-    }
+      if (isCorrect) {
+        playCorrect();
+        setScore((prev) => prev + 1);
+        setStreak((prev) => prev + 1);
+        setShowStreak(true);
+      } else {
+        playWrong();
+        setStreak(0);
+      }
 
-    const newAnswer = {
-      question: currentQuestion.question,
-      selected: answer,
-      correct: currentQuestion.correct,
-      isCorrect,
-    };
+      const newAnswer = {
+        question: currentQuestion.question,
+        selected: answer,
+        correct: currentQuestion.correct,
+        isCorrect,
+      };
 
-    setAnswers((prev) => {
-      const updatedAnswers = [...prev, newAnswer];
-      setTimeout(() => {
-        if (currentIndex + 1 < totalQuestions) {
-          setCurrentIndex((p) => p + 1);
-        } else {
-          playComplete();
-          onFinish({
-            score: isCorrect ? score + 1 : score,
-            total: totalQuestions,
-            category,
-            answers: updatedAnswers,
-          });
-        }
-      }, 1500);
-      return updatedAnswers;
-    });
-  }
-
+      setAnswers((prev) => {
+        const updatedAnswers = [...prev, newAnswer];
+        setTimeout(() => {
+          if (currentIndex + 1 < totalQuestions) {
+            setCurrentIndex((p) => p + 1);
+          } else {
+            playComplete();
+            onFinish({
+              score: isCorrect ? score + 1 : score,
+              total: totalQuestions,
+              category,
+              answers: updatedAnswers,
+            });
+          }
+        }, 1500);
+        return updatedAnswers;
+      });
+    },
+    [
+      isAnswered,
+      currentQuestion,
+      currentIndex,
+      totalQuestions,
+      score,
+      category,
+      onFinish,
+      playCorrect,
+      playWrong,
+      playComplete,
+    ],
+  );
   function getTimerColor() {
     if (timeLeft > 10) return "#B2F2BB";
     if (timeLeft > 5) return "#FFD43B";
