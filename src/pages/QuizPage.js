@@ -11,8 +11,8 @@ const TIME_PER_QUESTION = 15;
 function QuizPage({ category, onFinish, onBack }) {
   const allCategoryQuestions = questions.filter((q) => q.category === category);
   const categoryQuestions = [...allCategoryQuestions]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 10);
+  //   .sort(() => Math.random() - 0.5)
+  //   .slice(0, 10);
 
   const { playCorrect, playWrong, playComplete, playBack } = useSound();
 
