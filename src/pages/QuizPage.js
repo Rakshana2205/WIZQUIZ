@@ -7,13 +7,13 @@ import useSound from "../hooks/useSound";
 import "../styles/QuizPage.css";
 
 const ANSWER_COLORS = ["#FFD43B", "#74C0FC", "#B2F2BB", "#FFA8A8"];
-const TIME_PER_QUESTION = 15;
 
-function QuizPage({ category, onFinish, onBack }) {
+function QuizPage({ category, difficulty, onFinish, onBack }) {
+  const TIME_PER_QUESTION = difficulty?.time || 15;
+  const QUESTIONS_TO_SHOW = difficulty?.questions || 10;
   const allCategoryQuestions = questions.filter((q) => q.category === category);
   const categoryQuestions = [...allCategoryQuestions];
-  //   .sort(() => Math.random() - 0.5)
-  //   .slice(0, 10);
+   
 
   const { playCorrect, playWrong, playComplete, playBack } = useSound();
 

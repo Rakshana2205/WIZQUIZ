@@ -203,3 +203,128 @@
   font-weight: 800;
   color: #3d2b00;
 }
+
+/* DIFFICULTY PICKER SCREEN */
+.diff-picker-screen {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px 0 60px;
+}
+
+.diff-back-btn {
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #3d2b00;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  margin-bottom: 24px;
+  display: block;
+}
+
+.diff-back-btn:hover {
+  background: #ffa8a8;
+  transform: translateX(-3px);
+}
+
+.diff-picker-header {
+  margin-bottom: 28px;
+}
+
+.diff-cat-preview {
+  border-radius: 24px;
+  padding: 28px 24px;
+  text-align: center;
+  border: 3px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.diff-cat-emoji {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.diff-cat-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #3d2b00;
+  margin-bottom: 6px;
+}
+
+.diff-cat-count {
+  font-size: 0.85rem;
+  color: rgba(61, 43, 0, 0.6);
+  font-weight: 600;
+}
+
+.diff-summary {
+  background: white;
+  border-radius: 16px;
+  padding: 16px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 2px solid rgba(0, 0, 0, 0.06);
+}
+
+.diff-summary-text {
+  font-size: 0.95rem;
+  color: rgba(61, 43, 0, 0.7);
+  font-weight: 600;
+}
+
+.diff-summary-text strong {
+  color: #3d2b00;
+  font-weight: 900;
+}
+
+.start-quiz-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ffd43b, #ffa94d);
+  border: 3px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50px;
+  padding: 18px;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #3d2b00;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(255, 212, 59, 0.4);
+  margin-bottom: 16px;
+}
+
+.start-quiz-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(255, 212, 59, 0.5);
+}
+
+.start-quiz-btn:active {
+  transform: scale(0.97);
+}
+
+.diff-highscore {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(61, 43, 0, 0.5);
+}
+
+.animate-in {
+  animation: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
